@@ -1,0 +1,8 @@
+{
+  "name": "Chấm Bài Tiếng Anh AI",
+  "description": "Hệ thống chấm bài luận Tiếng Anh tự động bằng AI & Kiểm tra đạo văn (AI English Essay Grading & Plagiarism Detection)",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
