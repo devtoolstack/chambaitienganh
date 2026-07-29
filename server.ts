@@ -329,7 +329,7 @@ let plagiarismResults: Record<string, PlagiarismCheckResult> = {};
 
 let settings: SystemSettings = {
   aiModel: 'gemini-2.5-flash',
-  geminiApiKeyConfigured: !!process.env.GEMINI_API_KEY,
+  geminiApiKeyConfigured: true,
   plagiarismThreshold: 25,
   promptTemplate: 'Chấm bài tiếng Anh theo Rubric được cung cấp...'
 };
@@ -531,15 +531,24 @@ app.get('/api/health', (req, res) => {
 app.get('/api/settings', (req, res) => {
   res.json({
     ...settings,
-    geminiApiKeyConfigured: !!process.env.GEMINI_API_KEY
+    geminiApiKeyConfigured: !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '')
   });
 });
 
 app.post('/api/settings', (req, res) => {
-  const { plagiarismThreshold, promptTemplate } = req.body;
+  const { plagiarismThreshold, promptTemplate, apiKey } = req.body;
+  if (apiKey && typeof apiKey === 'string' && apiKey.trim() !== '') {
+    process.env.GEMINI_API_KEY = apiKey.trim();
+  }
   if (plagiarismThreshold !== undefined) settings.plagiarismThreshold = Number(plagiarismThreshold);
   if (promptTemplate !== undefined) settings.promptTemplate = String(promptTemplate);
-  res.json({ success: true, settings });
+  res.json({
+    success: true,
+    settings: {
+      ...settings,
+      geminiApiKeyConfigured: !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '')
+    }
+  });
 });
 
 // Subjects

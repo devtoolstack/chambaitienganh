@@ -22,13 +22,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 }) => {
   const [plagiarismThreshold, setPlagiarismThreshold] = useState(settings.plagiarismThreshold || 25);
   const [promptTemplate, setPromptTemplate] = useState(settings.promptTemplate || '');
+  const [apiKey, setApiKey] = useState('AIzaSyD17FUYR87VjQvQAxvgqpeDDqhVa_7CSws');
   const [isSaved, setIsSaved] = useState(false);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSaveSettings({
       plagiarismThreshold,
-      promptTemplate
+      promptTemplate,
+      ...(apiKey ? { apiKey } : {})
     });
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
@@ -72,6 +74,24 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         <form onSubmit={handleSave} className="space-y-6 text-xs">
+          {/* Gemini API Key Input */}
+          <div className="space-y-2">
+            <label className="font-bold text-slate-800 flex items-center gap-1.5">
+              <KeyRound className="w-4 h-4 text-indigo-600" />
+              <span>Khóa API Gemini (GEMINI_API_KEY)</span>
+            </label>
+            <input
+              type="password"
+              placeholder="AIzaSy..."
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
+            />
+            <p className="text-[11px] text-slate-500">
+              Khóa Gemini API được cấu hình sẵn để chấm tự động. Bạn có thể thay đổi bằng key riêng của mình từ Google AI Studio.
+            </p>
+          </div>
+
           {/* Plagiarism Threshold */}
           <div className="space-y-2">
             <label className="font-bold text-slate-800 flex items-center justify-between">
