@@ -10,7 +10,8 @@ import {
   Clock,
   Calendar,
   Layers,
-  GraduationCap
+  GraduationCap,
+  X
 } from 'lucide-react';
 import { Assignment, ClassRoom, Rubric } from '../types';
 
@@ -173,100 +174,115 @@ export const AssignmentsView: React.FC<AssignmentsViewProps> = ({
 
       {/* Create Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-indigo-600" />
-              <span>Tạo Bài Tập Luận Mới</span>
-            </h3>
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+          <div className="bg-white rounded-2xl w-[95%] sm:w-[85%] md:w-[80%] max-w-4xl h-[85vh] md:h-[80vh] shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200/80 bg-slate-50/80 flex items-center justify-between shrink-0">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-indigo-600" />
+                <span>Tạo Bài Tập Luận Mới</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <form onSubmit={handleCreate} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Tên Đề Bài Luận (*)</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Ví dụ: IELTS Essay: Impact of Online Education"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+            {/* Modal Form */}
+            <form onSubmit={handleCreate} className="flex flex-col flex-1 min-h-0 text-xs">
+              {/* Scrollable Body */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-5">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Chọn Lớp Học</label>
-                  <select
-                    value={classRoomId}
-                    onChange={(e) => setClassRoomId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                  >
-                    {classes.map(c => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Chọn Rubric Chấm</label>
-                  <select
-                    value={rubricId}
-                    onChange={(e) => setRubricId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                  >
-                    {rubrics.map(r => (
-                      <option key={r.id} value={r.id}>{r.title}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Hướng Dẫn / Đề Bài Chi Tiết (*)</label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Nhập yêu cầu đề bài, số từ tối thiểu (ví dụ: 250 words)..."
-                  value={instructions}
-                  onChange={(e) => setInstructions(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Thang Điểm</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Tên Đề Bài Luận (*)</label>
                   <input
-                    type="number"
-                    value={maxScore}
-                    onChange={(e) => setMaxScore(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    type="text"
+                    required
+                    placeholder="Ví dụ: IELTS Essay: Impact of Online Education"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
                   />
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Chọn Lớp Học</label>
+                    <select
+                      value={classRoomId}
+                      onChange={(e) => setClassRoomId(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs bg-white"
+                    >
+                      {classes.map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Chọn Rubric Chấm</label>
+                    <select
+                      value={rubricId}
+                      onChange={(e) => setRubricId(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs bg-white"
+                    >
+                      {rubrics.map(r => (
+                        <option key={r.id} value={r.id}>{r.title}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Hạn Nộp Bài</label>
-                  <input
-                    type="datetime-local"
-                    value={deadline}
-                    onChange={(e) => setDeadline(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  <label className="block text-slate-700 font-semibold mb-1">Hướng Dẫn / Đề Bài Chi Tiết (*)</label>
+                  <textarea
+                    rows={6}
+                    required
+                    placeholder="Nhập yêu cầu đề bài, số từ tối thiểu (ví dụ: 250 words)..."
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs leading-relaxed"
                   />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Thang Điểm</label>
+                    <input
+                      type="number"
+                      value={maxScore}
+                      onChange={(e) => setMaxScore(Number(e.target.value))}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Hạn Nộp Bài</label>
+                    <input
+                      type="datetime-local"
+                      value={deadline}
+                      onChange={(e) => setDeadline(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+              {/* Modal Footer */}
+              <div className="flex items-center justify-end space-x-3 px-6 py-4 border-t border-slate-200/80 bg-slate-50/50 shrink-0">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 font-semibold rounded-xl"
+                  className="px-5 py-2.5 text-slate-600 hover:bg-slate-200/60 font-semibold rounded-xl text-xs transition-colors"
                 >
-                  Hủy
+                  Hủy Bỏ
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl"
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs transition-all"
                 >
                   {isSubmitting ? 'Đang Tạo...' : 'Tạo Bài Tập'}
                 </button>

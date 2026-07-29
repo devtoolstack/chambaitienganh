@@ -6,7 +6,8 @@ import {
   CheckCircle2, 
   Sparkles,
   Layers,
-  Scale
+  Scale,
+  X
 } from 'lucide-react';
 import { Rubric, RubricCriterion } from '../types';
 
@@ -136,113 +137,136 @@ export const RubricsView: React.FC<RubricsViewProps> = ({
 
       {/* Create Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-200 my-8">
-            <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-indigo-600" />
-              <span>Tạo Bộ Tiêu Chí Rubric Mới</span>
-            </h3>
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+          <div className="bg-white rounded-2xl w-[95%] sm:w-[85%] md:w-[80%] max-w-5xl h-[85vh] md:h-[80vh] shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200/80 bg-slate-50/80 flex items-center justify-between shrink-0">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-indigo-600" />
+                <span>Tạo Bộ Tiêu Chí Rubric Mới</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Tên Thang Điểm Rubric (*)</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Ví dụ: Thang điểm Báo cáo Tiếng Anh Thương Mại"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Mô Tả Tổng Quan</label>
-                <input
-                  type="text"
-                  placeholder="Mô tả phạm vi áp dụng..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="space-y-3 pt-2">
-                <div className="flex justify-between items-center">
-                  <label className="font-bold text-slate-800">Danh Sách Tiêu Chí Chấm</label>
-                  <button
-                    type="button"
-                    onClick={handleAddCriterion}
-                    className="text-indigo-600 font-semibold text-xs hover:underline flex items-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Thêm Tiêu Chí
-                  </button>
-                </div>
-
-                {criteria.map((c, index) => (
-                  <div key={index} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <input
-                        type="text"
-                        placeholder="Tên tiêu chí"
-                        value={c.title}
-                        onChange={(e) => handleCriterionChange(index, 'title', e.target.value)}
-                        className="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 font-bold bg-white"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveCriterion(index)}
-                        className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="text-[11px] text-slate-500">Điểm Tối Đa</label>
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={c.maxScore}
-                          onChange={(e) => handleCriterionChange(index, 'maxScore', Number(e.target.value))}
-                          className="w-full px-2.5 py-1 rounded-lg border border-slate-300 bg-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] text-slate-500">Trọng Số (%)</label>
-                        <input
-                          type="number"
-                          value={c.weight}
-                          onChange={(e) => handleCriterionChange(index, 'weight', Number(e.target.value))}
-                          className="w-full px-2.5 py-1 rounded-lg border border-slate-300 bg-white"
-                        />
-                      </div>
-                    </div>
-
+            {/* Modal Form */}
+            <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 text-xs">
+              {/* Scrollable Body */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Tên Thang Điểm Rubric (*)</label>
                     <input
                       type="text"
-                      placeholder="Mô tả chi tiết yêu cầu đạt điểm..."
-                      value={c.description}
-                      onChange={(e) => handleCriterionChange(index, 'description', e.target.value)}
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700"
+                      required
+                      placeholder="Ví dụ: Thang điểm Báo cáo Tiếng Anh Thương Mại"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
                     />
                   </div>
-                ))}
+
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1">Mô Tả Tổng Quan</label>
+                    <input
+                      type="text"
+                      placeholder="Mô tả phạm vi áp dụng..."
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  <div className="flex justify-between items-center bg-slate-100/70 p-3 rounded-xl border border-slate-200/60">
+                    <div>
+                      <label className="font-bold text-slate-800 text-sm">Danh Sách Tiêu Chí Chấm ({criteria.length})</label>
+                      <p className="text-[11px] text-slate-500">Các tiêu chí đánh giá thành phần và trọng số % tương ứng</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddCriterion}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1 shadow-2xs transition-all"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> Thêm Tiêu Chí
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {criteria.map((c, index) => (
+                      <div key={index} className="p-4 bg-slate-50/90 rounded-xl border border-slate-200/80 space-y-3 relative hover:border-indigo-300 transition-all">
+                        <div className="flex items-center justify-between gap-2">
+                          <input
+                            type="text"
+                            placeholder="Tên tiêu chí"
+                            value={c.title}
+                            onChange={(e) => handleCriterionChange(index, 'title', e.target.value)}
+                            className="flex-1 px-3 py-1.5 rounded-lg border border-slate-300 font-bold bg-white text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveCriterion(index)}
+                            className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="Xóa tiêu chí"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[11px] text-slate-500 font-medium">Điểm Tối Đa</label>
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={c.maxScore}
+                              onChange={(e) => handleCriterionChange(index, 'maxScore', Number(e.target.value))}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[11px] text-slate-500 font-medium">Trọng Số (%)</label>
+                            <input
+                              type="number"
+                              value={c.weight}
+                              onChange={(e) => handleCriterionChange(index, 'weight', Number(e.target.value))}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold"
+                            />
+                          </div>
+                        </div>
+
+                        <input
+                          type="text"
+                          placeholder="Mô tả chi tiết yêu cầu đạt điểm..."
+                          value={c.description}
+                          onChange={(e) => handleCriterionChange(index, 'description', e.target.value)}
+                          className="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+              {/* Modal Footer */}
+              <div className="flex items-center justify-end space-x-3 px-6 py-4 border-t border-slate-200/80 bg-slate-50/50 shrink-0">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 font-semibold rounded-xl"
+                  className="px-5 py-2.5 text-slate-600 hover:bg-slate-200/60 font-semibold rounded-xl text-xs transition-colors"
                 >
-                  Hủy
+                  Hủy Bỏ
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl"
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs transition-all"
                 >
                   {isSubmitting ? 'Đang Tạo...' : 'Lưu Rubric'}
                 </button>

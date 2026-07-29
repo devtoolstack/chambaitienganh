@@ -6,7 +6,8 @@ import {
   Trash2, 
   GraduationCap, 
   Layers, 
-  KeyRound 
+  KeyRound,
+  X 
 } from 'lucide-react';
 import { Subject, ClassRoom } from '../types';
 
@@ -163,45 +164,71 @@ export const SubjectsClassesView: React.FC<SubjectsClassesViewProps> = ({
 
       {/* Add Subject Modal */}
       {showSubjectModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Thêm Môn Học Mới</h3>
-            <form onSubmit={handleCreateSubject} className="space-y-3 text-xs">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+          <div className="bg-white rounded-2xl w-[95%] sm:w-[85%] md:w-[80%] max-w-2xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200/80 bg-slate-50/80 flex items-center justify-between shrink-0">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-indigo-600" />
+                <span>Thêm Môn Học Mới</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowSubjectModal(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSubject} className="p-6 space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Mã Môn Học</label>
+                <label className="block text-slate-700 font-semibold mb-1">Mã Môn Học (*)</label>
                 <input
                   type="text"
                   required
                   placeholder="ENG201"
                   value={subjectCode}
                   onChange={(e) => setSubjectCode(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
                 />
               </div>
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Tên Môn Học</label>
+                <label className="block text-slate-700 font-semibold mb-1">Tên Môn Học (*)</label>
                 <input
                   type="text"
                   required
                   placeholder="Tiếng Anh Chuyên Ngành"
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
                 />
               </div>
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Mô Tả</label>
+                <label className="block text-slate-700 font-semibold mb-1">Mô Tả Học Phần</label>
                 <input
                   type="text"
                   placeholder="Mô tả nội dung môn học..."
                   value={subjectDesc}
                   onChange={(e) => setSubjectDesc(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs"
                 />
               </div>
-              <div className="flex justify-end space-x-2 pt-3">
-                <button type="button" onClick={() => setShowSubjectModal(false)} className="px-4 py-2 text-slate-600">Hủy</button>
-                <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-semibold">Thêm Môn</button>
+
+              <div className="flex justify-end space-x-3 pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowSubjectModal(false)}
+                  className="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-semibold rounded-xl text-xs"
+                >
+                  Hủy Bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs"
+                >
+                  Thêm Môn Học
+                </button>
               </div>
             </form>
           </div>
@@ -210,56 +237,87 @@ export const SubjectsClassesView: React.FC<SubjectsClassesViewProps> = ({
 
       {/* Add Class Modal */}
       {showClassModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Thêm Lớp Học Mới</h3>
-            <form onSubmit={handleCreateClass} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Môn Học</label>
-                <select
-                  value={selectedSubjectId}
-                  onChange={(e) => setSelectedSubjectId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+          <div className="bg-white rounded-2xl w-[95%] sm:w-[85%] md:w-[80%] max-w-2xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200/80 bg-slate-50/80 flex items-center justify-between shrink-0">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Users className="w-5 h-5 text-indigo-600" />
+                <span>Thêm Lớp Học Mới</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowClassModal(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateClass} className="p-6 space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">Thuộc Môn Học (*)</label>
+                  <select
+                    value={selectedSubjectId}
+                    onChange={(e) => setSelectedSubjectId(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs"
+                  >
+                    {subjects.map(s => (
+                      <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">Mã Lớp Tín Chỉ (*)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="ENG201-K15-T3"
+                    value={classCode}
+                    onChange={(e) => setClassCode(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">Tên Lớp Lịch Học (*)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Lớp ENG201 - Sáng Thứ 3"
+                    value={className}
+                    onChange={(e) => setClassName(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">Sĩ Số Sinh Viên</label>
+                  <input
+                    type="number"
+                    value={studentCount}
+                    onChange={(e) => setStudentCount(Number(e.target.value))}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowClassModal(false)}
+                  className="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-semibold rounded-xl text-xs"
                 >
-                  {subjects.map(s => (
-                    <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Mã Lớp Tín Chỉ</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="ENG201-K15-T3"
-                  value={classCode}
-                  onChange={(e) => setClassCode(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Tên Lớp Lịch Học</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Lớp ENG201 - Sáng Thứ 3"
-                  value={className}
-                  onChange={(e) => setClassName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1">Sĩ Số Sinh Viên</label>
-                <input
-                  type="number"
-                  value={studentCount}
-                  onChange={(e) => setStudentCount(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300"
-                />
-              </div>
-              <div className="flex justify-end space-x-2 pt-3">
-                <button type="button" onClick={() => setShowClassModal(false)} className="px-4 py-2 text-slate-600">Hủy</button>
-                <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-semibold">Thêm Lớp</button>
+                  Hủy Bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs"
+                >
+                  Thêm Lớp Học
+                </button>
               </div>
             </form>
           </div>
