@@ -22,7 +22,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 }) => {
   const [plagiarismThreshold, setPlagiarismThreshold] = useState(settings.plagiarismThreshold || 25);
   const [promptTemplate, setPromptTemplate] = useState(settings.promptTemplate || '');
-  const [apiKey, setApiKey] = useState('AIzaSyD17FUYR87VjQvQAxvgqpeDDqhVa_7CSws');
+  const [apiKey, setApiKey] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -76,19 +76,24 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <form onSubmit={handleSave} className="space-y-6 text-xs">
           {/* Gemini API Key Input */}
           <div className="space-y-2">
-            <label className="font-bold text-slate-800 flex items-center gap-1.5">
-              <KeyRound className="w-4 h-4 text-indigo-600" />
-              <span>Khóa API Gemini (GEMINI_API_KEY)</span>
+            <label className="font-bold text-slate-800 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <KeyRound className="w-4 h-4 text-indigo-600" />
+                <span>Khóa API Gemini (GEMINI_API_KEY)</span>
+              </span>
+              <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-emerald-600" /> Server-side Proxy
+              </span>
             </label>
             <input
               type="password"
-              placeholder="AIzaSy..."
+              placeholder={settings.geminiApiKeyConfigured ? "•••••••••••••••• (Đã bảo mật trên Backend Server)" : "Nhập AIzaSy... để cập nhật mới"}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
             />
             <p className="text-[11px] text-slate-500">
-              Khóa Gemini API được cấu hình sẵn để chấm tự động. Bạn có thể thay đổi bằng key riêng của mình từ Google AI Studio.
+              🔒 <b>Giải pháp bảo mật:</b> API Key được lưu trên môi trường Server (Node.js/Vercel Environment Variables) và gọi Gemini qua API Backend, tuyệt đối không lộ ở phía Trình duyệt (Client-side HTML/JS). Để cập nhật Key mới, hãy nhập vào ô trên và bấm Lưu.
             </p>
           </div>
 
