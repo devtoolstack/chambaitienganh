@@ -14,6 +14,10 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
+if (!process.env.GEMINI_API_KEY) {
+  process.env.GEMINI_API_KEY = 'AIzaSyD17FUYR87VjQvQAxvgqpeDDqhVa_7CSws';
+}
+
 app.use(express.json({ limit: '10mb' }));
 
 // Initial Seed Data
